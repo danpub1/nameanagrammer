@@ -1,0 +1,48 @@
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta charset="utf-8"/>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,600;0,800;1,600;1,800&family=Merriweather:ital,wght@0,300;0,700;1,300;1,700&family=Fira+Code:ital,wght@0,400;0,700&display=swap');
+            th{font-weight:unset;text-align:unset}@media print{html{background-color:#FFF !important}a,a:visited{text-decoration:underline}p,img{page-break-inside:avoid !important;break-inside:avoid !important}}html{background-color:#f4f4f4}body{background-color:#FFF;color:#000}strong,b{color:#000}h1,h2,h3,h4,h5,h6{color:#000}blockquote{border-left-color:#f4f4f4}hr,.vscode-dark hr,.vscode-light hr{border-color:#f4f4f4}h1,.vscode-dark h1,.vscode-light h1,h2,.vscode-dark h2,.vscode-light h2{border-bottom-color:#f4f4f4}html{font-size:16px}body{font-family:'Merriweather','Georgia','Times New Roman',serif;font-weight:300;word-spacing:.1em;letter-spacing:0;line-height:150%}body strong,body b{font-weight:700}pre,code{font-family:'Fira Code','Fira Mono','Courier New',monospace;line-height:133%;font-weight:400;word-spacing:0;letter-spacing:0;line-height:inherit;font-size:.880rem}h1,h2,h3,h4,h5,h6{font-family:'Fira Sans','Trebuchet MS','Arial Black','Arial','Helvetica',sans-serif;font-weight:inherit;word-spacing:0;letter-spacing:0;line-height:110%}h1,h2,h3,h4,h5,h6{font-weight:300}h1 strong,h2 strong,h3 strong,h4 strong,h5 strong,h6 strong,h1 b,h2 b,h3 b,h4 b,h5 b,h6 b{font-weight:700}p{font-size:1rem}h1{font-size:2.618rem}h2{font-size:2.058rem}h3{font-size:1.618rem}h4{font-size:1.272rem}h5{font-size:1.000rem}h6{font-size:.786rem}h1>code{font-size:2.058rem}h2>code{font-size:1.618rem}h3>code{font-size:1.272rem}h4>code{font-size:1rem}h5>code{font-size:.786rem}h6>code{font-size:.618rem}html{max-width:100%}body{max-width:64rem;margin:0 auto;padding:1rem 1rem 1rem 1rem;word-wrap:break-word}table{width:100%}p,h1,h2,h3,h4,h5,h6,blockquote,pre,table,ol,ul{margin:1.272rem 0 0 0}li>ul,li>ol{margin-top:0}hr{margin:0}body>*:first-child,body>*:first-child>*:first-child,body>*:first-child>*:first-child>*:first-child,body>*:first-child>*:first-child>*:first-child>*:first-child,body>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child,body>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child,body>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child>*:first-child{margin-top:0}blockquote>*:last-child{margin-bottom:1.272rem}blockquote>*:first-child{margin-top:1.272rem}blockquote{border-left-width:8px;border-left-style:solid;padding:0 1.272rem 0 1.272rem}hr,.vscode-dark hr,.vscode-light hr{height:0;border-width:1px;border-style:solid}h1,h2{border-bottom-width:2px;border-bottom-style:solid}h1{margin-top:2.618rem}h2{margin-top:2.058rem}h3{margin-top:1.618rem}h4{margin-top:1.272rem}h5{margin-top:1.272rem}h6{margin-top:1.272rem}img{display:block;max-width:100%;margin-left:auto;margin-right:auto;page-break-inside:avoid !important;break-inside:avoid !important}
+        </style>
+		<script src="wasm_exec.js"></script>
+		<script>
+			const go = new Go();
+			WebAssembly.instantiateStreaming(fetch("nameanagrammer.wasm.gz").then(response => new Response(response.body.pipeThrough(new DecompressionStream("gzip")), {headers: {"Content-Type": "application/wasm"}})), go.importObject).then((result) => {
+				go.run(result.instance);
+                document.getElementById('button').disabled = false;
+                document.getElementById('button').innerHTML = 'OK';
+			});
+        </script>
+        <script>
+            var count = 0;
+            function dofind(s) {
+                results = findAnagramsJS(s)
+                rv = ""
+                count = results.length
+                results.forEach(result => { rv = rv + result + '<br>' })
+                return rv
+            }
+
+            function doclick() {
+                document.getElementById('results').innerHTML = dofind(document.getElementById('name').value)
+                document.getElementById('title').innerHTML = count.toString() + (count == 1 ? " Anagram:" : " Anagrams:")
+            }
+        </script>
+	</head>
+	<body>
+        <h2>Name Anagrammer</h2>
+        <br>
+        Enter name to anagram:<br>
+        <input id="name" size="35" />
+        <button id="button" onclick="doclick()" disabled>(loading)</button>
+        <div style="margin-top: 1.2em;">
+            <span id="title">Anagrams:</span>
+            <div id="results" style="margin-left: 1em;">
+            </div>
+        </div>
+    </body>
+</html>
+
+
